@@ -19,7 +19,17 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-$users = App\User::all();
 Route::get('/kafe', function() {
-	return view('kafehome',compact($users));
+	return view('layouts.kafeapp');
+});
+
+Route::get('menu/create', 'MenuController@create');
+Route::post('menu/store', 'MenuController@store');
+Route::get('menu', 'MenuController@index');
+Route::get('menu/edit/{id}', 'MenuController@edit');
+Route::post('menu/edit/{id}', 'MenuController@update');
+Route::delete('menu/{id}', 'MenuController@destroy');
+
+Route::get('/pesan', function(){
+    return view('pesanaktif');
 });

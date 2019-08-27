@@ -14,8 +14,8 @@
                         </div>
                     @endif
 
-                    You are logged in! Click <href> 
-                    here</href> to proceed
+                    You are logged in! Click <a href="{{url ('/kafe') }}"> 
+                    here</a> to proceed
                     
                 </div>
             </div>

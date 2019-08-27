@@ -1,50 +1,48 @@
-<!-- menu.blade.php -->
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Laravel MongoDB CRUD Tutorial With Example</title>
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">  
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
-  </head>
-  <body>
-    <div class="container">
-      <h2>Laravel MongoDB CRUD Tutorial With Example</h2><br/>
-      <div class="container">
-    </div>
-      <form method="post" action="{{url('add')}}">
-        @csrf
-        <div class="row">
-          <div class="col-md-4"></div>
-          <div class="form-group col-md-4">
-            <label for="Name">Car Company:</label>
-            <input type="text" class="form-control" name="carcompany">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4"></div>
-          <div class="form-group col-md-4">
-            <label for="Model">Model:</label>
-            <input type="text" class="form-control" name="model">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4"></div>
-          <div class="form-group col-md-4">
-            <label for="Price">Price:</label>
-            <input type="text" class="form-control" name="price">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4"></div>
-          <div class="form-group col-md-4">
-            <button type="submit" class="btn btn-success">Submit</button>
-          </div>
-        </div>
-      </form>
-   </div>
-  </body>
-</html>
+@extends('layouts.kafeapp')
+@section('content')
+<div class="container">
+    <br />
+    @if (\Session::has('success'))
+      <div class="alert alert-success">
+        <p>{{ \Session::get('success') }}</p>
+      </div><br />
+    @endif
+    <a class="btn btn-primary" href="menu/create" role="button">Tambah</a>
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Menu</th>
+        <th>Harga</th>
+        <th>Status</th>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      @for($i = 0;$i < $menus->count(); $i++)
+      <tr>
+        <td>{{$i+1}}</td>
+        <td>{{$menus[$i]->name}}</td>
+        <td>{{$menus[$i]->price}}</td>
+        <td>
+        @if($menus[$i]->status == 0)
+        <span class="badge badge-danger">Tidak aktif</span>
+        @else
+        <span class="badge badge-primary">Aktif</span>
+        @endif
+        </td>
+        <td><a href="{{action('MenuController@edit', $menus[$i]->id)}}" class="btn btn-warning">Edit</a></td>
+        <td>
+          <form action="{{action('MenuController@destroy', $menus[$i]->id)}}" method="post">
+            @csrf
+            <input name="_method" type="hidden" value="DELETE">
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      @endfor
+    </tbody>
+  </table>
+  </div>
+@endsection

@@ -13,11 +13,6 @@ class Menu extends Eloquent
     protected $collection = 'menus';
     
     protected $fillable = [
-        'name', 'price'
+        'name', 'price', 'status'
     ];
-
-    protected $casts = [
-    	'name' => 'string',
-    	'price' => 'integer'
-    ]
 }
