@@ -8,17 +8,17 @@
         <div class="row">
           <div class="col-md-4"></div>
           <div class="form-group col-md-4">
-            <label for="menu">Menu</label>
-            <input type="text" class="form-control" id="name">
+            <label for="number">No Pesanan</label>
+            <input class="form-control" id="number" value="ERP{{date('Ymd')}}-{{$orders->where('pid',Auth::user()->id)->count()}}" disabled>
           </div>
         </div>
         <div class="row">
           <div class="col-md-4"></div>
           <div class="form-group col-md-4">
-            <label for="price">Harga</label>
-            <input type="text" class="form-control" id="price">
-          </div>
+            <label for="order"  id="order">Pesanan</label>
+            <button type="button" class="btn btn-success" id="add">Tambah</button>
         </div>
+        @if(Auth::user()->type == "Cashier")
         <div class="row">
           <div class="col-md-4"></div>
           <div class="form-group col-md-4">
@@ -30,6 +30,7 @@
           </div>
           </div>
         </div>
+        @endif
         <div class="row">
           <div class="col-md-4"></div>
           <div class="form-group col-md-4">
@@ -41,13 +42,30 @@
 
    <script type="text/javascript">
          jQuery(document).ready(function(){
-
+           var i=0;
+           $("#add").click(function(){
+            $("#order").append('<select class="form-group col-md-4" name="order'+(i)+'"> \
+            <option value="">Pilih...</option> \
+            @foreach($menus as $menu) \
+            <option value="{{$menu->id}}">{{$menu->name}}</option> \
+            @endforeach \
+            </select>');
+            i = i + 1;
+           });
             jQuery('#submit').click(function(e){
               var value;
-              if ($("#status").is(":checked")){
+              if ($('#status').is(":checked")){
                 value=1;
               }else{
                 value=0;
+              }
+              var orders = [];
+              var price = 0;
+              var i = 0;
+              while($("option:selected").val() != null){
+                orders.push($("option:selected").val());
+                $("select[name=order"+i+"]").remove();
+                i = i+1;
               }
                e.preventDefault();
                $.ajaxSetup({
@@ -56,17 +74,17 @@
                   }
               });
                jQuery.ajax({
-                  url: "{{ url('/menu/store') }}",
+                  url: "{{ url('/order/store') }}",
                   method: 'post',
                   data: {
-                     name: jQuery('#name').val(),
-                     price: jQuery('#price').val(),
-                     status: value
+                     number: jQuery('#number').val(),
+                     order: orders,
+                     status: value,
+                     pid : "{{Auth::user()->id}}"
                   },
                   success: function(result){
                      jQuery('.alert').show();
                      jQuery('.alert').html(result.success);
-                     $("form").find("input[type=text]").val("");
                   }});
                });               
             });

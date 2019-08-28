@@ -1,3 +1,6 @@
+@extends('layouts.kafeapp')
+@section('content')
+
 <div class="container">
       <h2>Edit A Form</h2><br/>
       <div class="container">
@@ -7,14 +10,14 @@
         <div class="row">
           <div class="col-md-4"></div>
           <div class="form-group col-md-4">
-            <label for="Name">Car Company:</label>
+            <label for="menu">Menu</label>
             <input type="text" class="form-control" name="name" value="{{$menu->name}}">
           </div>
         </div>
         <div class="row">
           <div class="col-md-4"></div>
           <div class="form-group col-md-4">
-            <label for="Price">Model:</label>
+            <label for="price">Harga</label>
             <input type="text" class="form-control" name="price" value="{{$menu->price}}">
           </div>
         </div>
@@ -37,3 +40,4 @@
         </div>
       </form>
    </div>
+@endsection
